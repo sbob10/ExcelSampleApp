@@ -1,0 +1,182 @@
+﻿<Window x:Class="ExcelSampleApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExcelSampleApp"
+        ResizeMode="CanResizeWithGrip"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        mc:Ignorable="d"
+        Title="ExcelSampleApp" MinHeight="450" MinWidth="800" Width="1162" Height="573">
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:MessageBoxService />
+    </dxmvvm:Interaction.Behaviors>
+
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="800*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TabControl Margin="10" Grid.Row="1">
+            <TabItem Header="ExcelA">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="579*"/>
+                        <ColumnDefinition Width="187*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Add ExcelA-Entry" IsDefault="True" Margin="22,305,45,0" Command="{Binding AddEntryCommandExcelA}" Height="20" VerticalAlignment="Top" Grid.Column="1"/>
+                    <DataGrid Margin="10,50,18,10" CanUserResizeRows="False" CanUserAddRows="True" IsReadOnly="False" CanUserDeleteRows="True" AlternatingRowBackground="LightGray" ColumnWidth="200" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionA}" SelectedItem="{Binding SelectedItemExcelA}" >
+
+                        <DataGrid.Resources>
+                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                <Setter Property="Padding" Value="-2"/>
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="Background" Value="Red"/>
+                                        <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Self},
+                                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        
+                        <DataGrid.RowValidationRules>
+                            <local:ExcelAValidationRule ValidationStep="UpdatedValue"/>
+                        </DataGrid.RowValidationRules>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                Header="Value 1" 
+                                Binding="{Binding Val1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="Value 2" 
+                                Binding="{Binding Val2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="Value 3" 
+                                Binding="{Binding Val3, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowValidationErrorTemplate>
+                            <ControlTemplate>
+                                <Grid Margin="0,-2,0,-2"
+                                    ToolTip="{Binding RelativeSource={RelativeSource
+                                    FindAncestor, AncestorType={x:Type DataGridRow}},
+                                        Path=(Validation.Errors)[0].ErrorContent}">
+                                    <Ellipse StrokeThickness="0" Fill="Red" 
+                                        Width="{TemplateBinding FontSize}" 
+                                            Height="{TemplateBinding FontSize}" />
+                                    <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+                                FontWeight="Bold" Foreground="White" 
+                                    HorizontalAlignment="Center"  />
+                                </Grid>
+                            </ControlTemplate>
+                        </DataGrid.RowValidationErrorTemplate>
+                        
+                    </DataGrid>
+
+                    <TextBox Height="23" Margin="22,79,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val1}" VerticalAlignment="Top" Grid.Column="1"/>
+                    <TextBox Height="23" Margin="22,157,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val2}" VerticalAlignment="Top" Grid.Column="1" />
+                    <TextBox Height="23" Margin="22,232,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val3}" VerticalAlignment="Top" Grid.Column="1" RenderTransformOrigin="0.536,1.609"/>
+                    <Button Content="Export"  Margin="22,426,45,0" Command="{Binding ExportExcelACommand}" Grid.Column="1" Height="20" VerticalAlignment="Top"/>
+                    <Label Content="Value 1" Grid.Column="1" HorizontalAlignment="Left" Margin="22,50,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 2" Grid.Column="1" HorizontalAlignment="Left" Margin="22,126,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 3" Grid.Column="1" HorizontalAlignment="Left" Margin="22,201,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="ExcelB">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="308*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="120*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0" Margin="10,50,10,10" AlternatingRowBackground="LightGray" ColumnWidth="200" IsReadOnly="True" AutoGenerateColumns="True" ItemsSource="{Binding MyCollectionBForTable}" />
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="20,81,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding MyCollectionBMains}"  SelectedItem="{Binding MyActiveItemB}"/>
+                    <Label Content="ExcelBs by Value 3" Grid.Column="1" HorizontalAlignment="Left" Margin="20,50,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 3:" HorizontalAlignment="Left" Margin="20,125,0,0" VerticalAlignment="Top" Grid.Column="1" FontWeight="Bold"/>
+                    <Label Content="{Binding CurrExcelBEntry.Val3Main}" Grid.Column="1" HorizontalAlignment="Left" Margin="20,156,0,0" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Value 4:" Grid.Column="1" HorizontalAlignment="Left" Margin="20,201,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Content="{Binding CurrExcelBEntry.Val4}" Grid.Column="1" HorizontalAlignment="Left" Margin="20,232,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 5:" Grid.Column="1" HorizontalAlignment="Left" Margin="20,273,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Content="{Binding CurrExcelBEntry.Val5}" Grid.Column="1" HorizontalAlignment="Left" Margin="20,304,0,0" VerticalAlignment="Top"/>
+                    <Button Content="Add ExcelB-Entry" HorizontalAlignment="Left" Margin="19,415,0,0" VerticalAlignment="Top" Width="120" Grid.Column="2" Command="{Binding AddEntryCommandExcelB}"/>
+                    <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="19,81,0,0" TextWrapping="Wrap" Text="{Binding AddExcelB.Val3Main}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="19,156,0,0" TextWrapping="Wrap" Text="{Binding AddExcelB.Val4}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="19,232,0,0" TextWrapping="Wrap" Text="{Binding AddExcelB.Val5}" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Value 4" Grid.Column="2" HorizontalAlignment="Left" Margin="19,125,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 3" Grid.Column="2" HorizontalAlignment="Left" Margin="19,50,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 5" Grid.Column="2" HorizontalAlignment="Left" Margin="19,201,0,0" VerticalAlignment="Top"/>
+                    <Button Content="Export " Grid.Column="2" HorizontalAlignment="Left" Margin="19,464,0,0" VerticalAlignment="Top" Width="120" Command="{Binding ExportExcelBCommand}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="ExcelC">
+                <Grid>
+                    
+                    <DataGrid Margin="10,50,205,0" IsReadOnly="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionC}">
+                        
+                        <DataGrid.Resources>
+                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                <Setter Property="Padding" Value="-2"/>
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="Background" Value="Red"/>
+                                        <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Self},
+                                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.RowValidationRules>
+                            <local:ExcelCValidationRule ValidationStep="UpdatedValue"/>
+                        </DataGrid.RowValidationRules>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                Header="Value 1" 
+                                Binding="{Binding Val1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="Value 2" 
+                                Binding="{Binding Val2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="Value 3" 
+                                Binding="{Binding Val3, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="Value 4" 
+                                Binding="{Binding Val4, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowValidationErrorTemplate>
+                            <ControlTemplate>
+                                <Grid Margin="0,-2,0,-2"
+                                    ToolTip="{Binding RelativeSource={RelativeSource
+                                    FindAncestor, AncestorType={x:Type DataGridRow}},
+                                        Path=(Validation.Errors)[0].ErrorContent}">
+                                    <Ellipse StrokeThickness="0" Fill="Red" 
+                                        Width="{TemplateBinding FontSize}" 
+                                            Height="{TemplateBinding FontSize}" />
+                                    <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+                                FontWeight="Bold" Foreground="White" 
+                                    HorizontalAlignment="Center"  />
+                                </Grid>
+                            </ControlTemplate>
+                        </DataGrid.RowValidationErrorTemplate>
+                        
+                    </DataGrid>
+                    <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding AddEntryCommandExcelC}"/>
+                    <Button Content="Export" HorizontalAlignment="Left" Margin="177,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding ExportExcelCCommand}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding MonthComboboxSource}" Margin="10,10,0,0" SelectedItem="{Binding SelectedMonth}" VerticalAlignment="Top" Width="120"/>
+    </Grid>
+</Window>
