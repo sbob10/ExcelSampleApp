@@ -8,6 +8,7 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
+        xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
         Title="ExcelSampleApp" MinHeight="450" MinWidth="800" Width="1162" Height="573">
 
     <dxmvvm:Interaction.Behaviors>
@@ -25,13 +26,13 @@
         </Grid.RowDefinitions>
         
         <TabControl Margin="10" Grid.Row="1">
-            <TabItem Header="ExcelA">
+            <TabItem Header="ExcelA" Style="{DynamicResource SimpleTabItem}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="579*"/>
                         <ColumnDefinition Width="187*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Add ExcelA-Entry" IsDefault="True" Margin="22,305,45,0" Command="{Binding AddEntryCommandExcelA}" Height="20" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Button Content="Add ExcelA-Entry" Style="{DynamicResource SimpleButton}" IsDefault="True" Margin="22,305,45,0" Command="{Binding AddEntryCommandExcelA}" Height="20" VerticalAlignment="Top" Grid.Column="1"/>
                     <DataGrid Margin="10,50,18,10" CanUserResizeRows="False" CanUserAddRows="True" IsReadOnly="False" CanUserDeleteRows="True" AlternatingRowBackground="LightGray" ColumnWidth="200" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionA}" SelectedItem="{Binding SelectedItemExcelA}" >
 
                         <DataGrid.Resources>
@@ -82,16 +83,16 @@
                         
                     </DataGrid>
 
-                    <TextBox Height="23" Margin="22,79,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val1}" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox Height="23" Margin="22,157,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val2}" VerticalAlignment="Top" Grid.Column="1" />
+                    <TextBox Height="23" Margin="22,79,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val1}" VerticalAlignment="Top" Grid.Column="1" Background="#FFA01212"/>
+                    <TextBox ma:TextBoxHelper.AutoWatermark="True" ma:TextBoxHelper.Watermark="Fuck you" Height="23" Margin="22,157,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val2}" VerticalAlignment="Top" Grid.Column="1" />
                     <TextBox Height="23" Margin="22,232,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val3}" VerticalAlignment="Top" Grid.Column="1" RenderTransformOrigin="0.536,1.609"/>
-                    <Button Content="Export"  Margin="22,426,45,0" Command="{Binding ExportExcelACommand}" Grid.Column="1" Height="20" VerticalAlignment="Top"/>
+                    <Button Content="Export" Style="{DynamicResource SimpleButton}"  Margin="22,426,45,0" Command="{Binding ExportExcelACommand}" Grid.Column="1" Height="20" VerticalAlignment="Top"/>
                     <Label Content="Value 1" Grid.Column="1" HorizontalAlignment="Left" Margin="22,50,0,0" VerticalAlignment="Top"/>
                     <Label Content="Value 2" Grid.Column="1" HorizontalAlignment="Left" Margin="22,126,0,0" VerticalAlignment="Top"/>
                     <Label Content="Value 3" Grid.Column="1" HorizontalAlignment="Left" Margin="22,201,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="ExcelB">
+            <TabItem Header="ExcelB" Style="{DynamicResource SimpleTabItem}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="308*"/>
@@ -117,11 +118,11 @@
                     <Button Content="Export " Grid.Column="2" HorizontalAlignment="Left" Margin="19,464,0,0" VerticalAlignment="Top" Width="120" Command="{Binding ExportExcelBCommand}"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="ExcelC">
+            <TabItem Header="ExcelC" Style="{DynamicResource SimpleTabItem}">
                 <Grid>
-                    
+
                     <DataGrid Margin="10,50,205,0" IsReadOnly="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionC}">
-                        
+
                         <DataGrid.Resources>
                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                 <Setter Property="Padding" Value="-2"/>
@@ -170,7 +171,7 @@
                                 </Grid>
                             </ControlTemplate>
                         </DataGrid.RowValidationErrorTemplate>
-                        
+
                     </DataGrid>
                     <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding AddEntryCommandExcelC}"/>
                     <Button Content="Export" HorizontalAlignment="Left" Margin="177,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding ExportExcelCCommand}"/>
