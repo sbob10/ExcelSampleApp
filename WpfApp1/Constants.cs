@@ -8,7 +8,7 @@ namespace ExcelSampleApp
 {
     static class Constants
     {
-        public static readonly List<String> Months = new List<String>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
+        public static readonly List<String> Months = new List<String>(new String[] { "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" });
 
         public static String getCurrentDateMonth()
         {

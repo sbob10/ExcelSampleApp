@@ -24,16 +24,23 @@
             <RowDefinition Height="50*"></RowDefinition>
             <RowDefinition Height="800*"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <TabControl Margin="10" Grid.Row="1">
             <TabItem Header="ExcelA" Style="{DynamicResource SimpleTabItem}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="579*"/>
-                        <ColumnDefinition Width="187*"/>
+                        <ColumnDefinition Width="670*"/>
+                        <ColumnDefinition Width="183*"/>
+                        <ColumnDefinition Width="275*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Add ExcelA-Entry" Style="{DynamicResource SimpleButton}" IsDefault="True" Margin="22,305,45,0" Command="{Binding AddEntryCommandExcelA}" Height="20" VerticalAlignment="Top" Grid.Column="1"/>
-                    <DataGrid Margin="10,50,18,10" CanUserResizeRows="False" CanUserAddRows="True" IsReadOnly="False" CanUserDeleteRows="True" AlternatingRowBackground="LightGray" ColumnWidth="200" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionA}" SelectedItem="{Binding SelectedItemExcelA}" >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300*"></RowDefinition>
+                        <RowDefinition Height="100*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Content="Add ExcelA-Entry" Style="{DynamicResource SimpleButton}" IsDefault="True" Margin="22,305,45,0" Command="{Binding AddEntryCommandExcelA}" Height="20" VerticalAlignment="Top" Grid.Column="2"/>
+                    <DataGrid BorderThickness="0" x:Name="mainGrid" Margin="10,50,0,10" CanUserResizeRows="False" CanUserAddRows="True" IsReadOnly="False" CanUserDeleteRows="True" AlternatingRowBackground="LightGray" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionA}" SelectedItem="{Binding SelectedItemExcelA}" >
 
                         <DataGrid.Resources>
                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
@@ -48,20 +55,28 @@
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.Resources>
-                        
+
                         <DataGrid.RowValidationRules>
                             <local:ExcelAValidationRule ValidationStep="UpdatedValue"/>
                         </DataGrid.RowValidationRules>
 
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding OnGridEditedCommand}" ></KeyBinding>
+                            <KeyBinding Key="Return" Command="{Binding OnGridEditedCommand}" ></KeyBinding>
+                        </DataGrid.InputBindings>
+
                         <DataGrid.Columns>
                             <DataGridTextColumn 
                                 Header="Value 1" 
+                                Width="*"
                                 Binding="{Binding Val1, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
                                 Header="Value 2" 
+                                Width="*"
                                 Binding="{Binding Val2, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
                                 Header="Value 3" 
+                                Width="*"
                                 Binding="{Binding Val3, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
 
@@ -80,16 +95,24 @@
                                 </Grid>
                             </ControlTemplate>
                         </DataGrid.RowValidationErrorTemplate>
-                        
+
                     </DataGrid>
 
-                    <TextBox Height="23" Margin="22,79,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val1}" VerticalAlignment="Top" Grid.Column="1" Background="#FFA01212"/>
-                    <TextBox ma:TextBoxHelper.AutoWatermark="True" ma:TextBoxHelper.Watermark="Fuck you" Height="23" Margin="22,157,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val2}" VerticalAlignment="Top" Grid.Column="1" />
-                    <TextBox Height="23" Margin="22,232,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val3}" VerticalAlignment="Top" Grid.Column="1" RenderTransformOrigin="0.536,1.609"/>
-                    <Button Content="Export" Style="{DynamicResource SimpleButton}"  Margin="22,426,45,0" Command="{Binding ExportExcelACommand}" Grid.Column="1" Height="20" VerticalAlignment="Top"/>
-                    <Label Content="Value 1" Grid.Column="1" HorizontalAlignment="Left" Margin="22,50,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Value 2" Grid.Column="1" HorizontalAlignment="Left" Margin="22,126,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Value 3" Grid.Column="1" HorizontalAlignment="Left" Margin="22,201,0,0" VerticalAlignment="Top"/>
+                    <TextBox Height="23" Margin="22,79,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val1}" VerticalAlignment="Top" Grid.Column="2" />
+                    <TextBox ma:TextBoxHelper.AutoWatermark="True" ma:TextBoxHelper.Watermark="Fuck you" Height="23" Margin="22,157,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val2}" VerticalAlignment="Top" Grid.Column="2" />
+                    <TextBox Height="23" Margin="22,232,45,0" TextWrapping="Wrap" Text="{Binding AddExcelA.Val3}" VerticalAlignment="Top" Grid.Column="2" RenderTransformOrigin="0.536,1.609"/>
+                    <Button Content="Export" Style="{DynamicResource SimpleButton}"  Margin="22,426,45,0" Command="{Binding ExportExcelACommand}" Grid.Column="2" Height="20" VerticalAlignment="Top"/>
+                    <Label Content="Value 1" Grid.Column="2" HorizontalAlignment="Left" Margin="22,50,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 2" Grid.Column="2" HorizontalAlignment="Left" Margin="22,126,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Value 3" Grid.Column="2" HorizontalAlignment="Left" Margin="22,201,0,0" VerticalAlignment="Top"/>
+                    <DataGrid AlternatingRowBackground="LightGray" BorderThickness="0" HeadersVisibility="Column" Margin="0,50,10,10" IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Column="1" Width="auto" Height="auto" ItemsSource="{Binding MyCollectionExcelAValue12}"  AutoGenerateColumns="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Header="Value 1 + 2" 
+                                Width="*" 
+                                Binding="{Binding}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="ExcelB" Style="{DynamicResource SimpleTabItem}">
@@ -121,7 +144,12 @@
             <TabItem Header="ExcelC" Style="{DynamicResource SimpleTabItem}">
                 <Grid>
 
-                    <DataGrid Margin="10,50,205,0" IsReadOnly="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionC}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300*"></RowDefinition>
+                        <RowDefinition Height="100*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid SelectedItem="{Binding SelectedItemExcelC}" Margin="10,50,10,0" IsReadOnly="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ItemsSource="{Binding MyCollectionC}">
 
                         <DataGrid.Resources>
                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
@@ -144,15 +172,19 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn 
                                 Header="Value 1" 
+                                Width="*"
                                 Binding="{Binding Val1, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
                                 Header="Value 2" 
+                                Width="*"
                                 Binding="{Binding Val2, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
-                                Header="Value 3" 
+                                Header="Value 3"
+                                Width="*"
                                 Binding="{Binding Val3, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
-                                Header="Value 4" 
+                                Header="Value 4"
+                                Width="*"
                                 Binding="{Binding Val4, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
 
@@ -173,11 +205,14 @@
                         </DataGrid.RowValidationErrorTemplate>
 
                     </DataGrid>
-                    <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding AddEntryCommandExcelC}"/>
-                    <Button Content="Export" HorizontalAlignment="Left" Margin="177,25,0,0" VerticalAlignment="Top" Width="152" Command="{Binding ExportExcelCCommand}"/>
+                    <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Command="{Binding AddEntryCommandExcelC}"/>
+                    <Button Content="Export" Margin="966,10,10,0" VerticalAlignment="Top" Command="{Binding ExportExcelCCommand}"/>
+                    <Button Content="Edit Entry" Command="{Binding EditEntryCommandExcelC}" HorizontalAlignment="Left" Margin="180,10,0,0" VerticalAlignment="Top" Width="150"/>
+                    <Button Content="Delete Entry" Command="{Binding DeleteEntryCommandExcelC}" HorizontalAlignment="Left" Margin="350,10,0,0" VerticalAlignment="Top" Width="150"/>
                 </Grid>
             </TabItem>
         </TabControl>
         <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding MonthComboboxSource}" Margin="10,10,0,0" SelectedItem="{Binding SelectedMonth}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Save Excels" Margin="950,10,10,2" Command="{Binding SafeExcelsCommand}"/>
     </Grid>
 </Window>

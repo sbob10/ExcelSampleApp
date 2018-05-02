@@ -1,0 +1,34 @@
+﻿<Window x:Class="ExcelSampleApp.EditValueExcelCWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExcelSampleApp"
+        mc:Ignorable="d"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        Title="EditValueExcelCWindow" MinHeight="350" MinWidth="400" Height="350" Width="400" MaxHeight="350" MaxWidth="400">
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:MessageBoxService />
+    </dxmvvm:Interaction.Behaviors>
+
+    <Window.DataContext>
+        <local:EditValueExcelCWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+
+        <Label Content="Value 1" HorizontalAlignment="Left" Margin="61,48,0,0" VerticalAlignment="Top"/>
+        <Label Content="Value 2" HorizontalAlignment="Left" Margin="61,98,0,0" VerticalAlignment="Top"/>
+        <Label Content="Value 3" HorizontalAlignment="Left" Margin="61,148,0,0" VerticalAlignment="Top"/>
+        <Label Content="Value 4" HorizontalAlignment="Left" Margin="61,198,0,0" VerticalAlignment="Top"/>
+        <Label HorizontalAlignment="Left" Height="23" Margin="168,50,0,0"  FontWeight="Bold" Content="{Binding EditExcelCValue.Val1}" VerticalAlignment="Top" Width="150"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="168,100,0,0" TextWrapping="Wrap" Text="{Binding EditExcelCValue.Val2}" VerticalAlignment="Top" Width="150"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="168,150,0,0" TextWrapping="Wrap" Text="{Binding EditExcelCValue.Val3}" VerticalAlignment="Top" Width="150"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="168,200,0,0" TextWrapping="Wrap" Text="{Binding EditExcelCValue.Val4}" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Edit Entry" Command="{Binding EditEntryExcelCCommand}" HorizontalAlignment="Left" Margin="168,260,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Cancel" Command="{Binding CloseDialogCommand}" HorizontalAlignment="Left" Margin="61,260,0,0" VerticalAlignment="Top" Width="75"/>
+
+    </Grid>
+</Window>

@@ -47,6 +47,7 @@ namespace ExcelSampleApp
                 temp.Val1 = slDocExcelA.GetCellValueAsString("B" + i.ToString());
                 temp.Val2 = slDocExcelA.GetCellValueAsString("C" + i.ToString());
                 temp.Val3 = slDocExcelA.GetCellValueAsString("D" + i.ToString());
+                temp.Val4 = slDocExcelA.GetCellValueAsString("E" + i.ToString());
 
                 if (string.IsNullOrEmpty(temp.Val1)) // Check for ID is not empty
                 {
@@ -182,10 +183,18 @@ namespace ExcelSampleApp
             {
                 if (x < collection.Count)
                 {
+                    SLStyle style = slDocExcelA.CreateStyle();
+                    style.SetFontBold(true);
+
+                    slDocExcelA.SetCellStyle("B1", style);
+                    slDocExcelA.SetCellValue("B1", "This is a Caption");
+
+
                     slDocExcelA.SetCellValue("A" + i.ToString(), j.ToString());
                     slDocExcelA.SetCellValue("B" + i.ToString(), collection.ElementAt(x).Val1);
                     slDocExcelA.SetCellValue("C" + i.ToString(), collection.ElementAt(x).Val2);
                     slDocExcelA.SetCellValue("D" + i.ToString(), collection.ElementAt(x).Val3);
+                    slDocExcelA.SetCellValue("E" + i.ToString(), collection.ElementAt(x).Val4);
                 }
                 else
                 {

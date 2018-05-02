@@ -95,9 +95,17 @@
     </Compile>
     <Compile Include="AddValueExcelCWindowViewModel.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="EditValueExcelCWindow.xaml.cs">
+      <DependentUpon>EditValueExcelCWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditValueExcelCWindowViewModel.cs" />
     <Compile Include="ExcelAValidationRule.cs" />
     <Compile Include="ExcelCValidationRule.cs" />
     <Page Include="AddValueExcelCWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditValueExcelCWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

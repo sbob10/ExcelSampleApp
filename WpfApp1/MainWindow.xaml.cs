@@ -31,6 +31,7 @@ namespace ExcelSampleApp
             InitializeComponent();
             vm = (MainWindowViewModel) this.DataContext;
             vm.ShowAddEntryDialogFuncExcelC = new Func<int, int, string>(ShowAddEntryDialogFuncExcelC);
+            vm.ShowEditEntryDialogFuncExcelC = new Func<ExcelC, string>(ShowEditEntryDialogFuncExcelC);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -55,10 +56,24 @@ namespace ExcelSampleApp
             return ""; //just pseudo
         }
 
+        private string ShowEditEntryDialogFuncExcelC(ExcelC entryToEdit)
+        {
+            var dialog = new EditValueExcelCWindow(EditEntryFromDialogExcelC, entryToEdit);
+            dialog.ShowDialog();
+
+            return ""; //just pseudo
+        }
+
         private void AddEntryFromDialogExcelC(ExcelC entry)
         {
             vm.AddEntryExcelCFromCodeBehind(entry);
         }
 
+        private void EditEntryFromDialogExcelC(ExcelC entry)
+        {
+            vm.EditEntryExcelCFromCodeBehind(entry);
+        }
+
+ 
     }
 }

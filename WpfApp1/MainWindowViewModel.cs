@@ -9,16 +9,33 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ExcelSampleApp
+    //ctrl + m + o: collapse all
+    //ctrl + m + l: expand all
 {
     public class MainWindowViewModel : ViewModelBase
     {
 
         #region Properties
 
+        private ObservableCollection<String> _MyCollectionExcelAValue12;
+
+        public ObservableCollection<String> MyCollectionExcelAValue12
+        {
+            get { return _MyCollectionExcelAValue12; }
+            set { SetProperty(ref _MyCollectionExcelAValue12, value, () => MyCollectionExcelAValue12); }
+        }
+
         private ExcelA _addExcelA;
-        private ExcelA _selectedItemExcelA;
         private ExcelB _addExcelB;
         private ExcelB _currExcelBEntry;
+
+        private ExcelC _SelectedItemExcelC;
+
+        public ExcelC SelectedItemExcelC
+        {
+            get { return _SelectedItemExcelC; }
+            set { SetProperty(ref _SelectedItemExcelC, value, () => SelectedItemExcelC); }
+        }
 
         private ObservableCollection<ExcelA> _myCollectionA;
         private ObservableCollection<ExcelA> _myCollectionBForTable;
@@ -36,12 +53,6 @@ namespace ExcelSampleApp
             set { SetProperty(ref _addExcelA, value, () => AddExcelA); }
         }
 
-        public ExcelA SelectedItemExcelA
-        {
-            get { return _selectedItemExcelA; }
-            set { SetProperty(ref _selectedItemExcelA, value, () => SelectedItemExcelA); }
-        }
-
         public ExcelB AddExcelB
         {
             get { return _addExcelB; }
@@ -57,8 +68,9 @@ namespace ExcelSampleApp
         public ObservableCollection<ExcelA> MyCollectionA
         {
             get { return _myCollectionA; }
-            set { SetProperty(ref _myCollectionA, value, () => MyCollectionA); }
+            set { SetProperty(ref _myCollectionA, value, () => MyCollectionA); OnAItemChangedReloadVal4s(); }
         }
+
 
         public ObservableCollection<ExcelA> MyCollectionBForTable
         {
@@ -114,14 +126,18 @@ namespace ExcelSampleApp
         #region Commands&Services
 
         public Func<int, int, string> ShowAddEntryDialogFuncExcelC { get; set; }
+        public Func<ExcelC, string> ShowEditEntryDialogFuncExcelC { get; set; }
 
         public ICommand AddEntryCommandExcelA { get; set; }
         public ICommand AddEntryCommandExcelB { get; set; }
         public ICommand AddEntryCommandExcelC { get; set; }
+        public ICommand EditEntryCommandExcelC { get; set; }
+        public ICommand DeleteEntryCommandExcelC { get; set; }
         public ICommand ExportExcelACommand { get; set; }
         public ICommand ExportExcelBCommand { get; set; }
         public ICommand ExportExcelCCommand { get; set; }
-        public ICommand DeleteEntryAOnKeyCommand { get; set; }
+        public ICommand OnGridEditedCommand { get; set; }
+        public ICommand SaveExcelsCommand { get; set; }
 
         public IMessageBoxService MessageBoxService { get { return ServiceContainer.GetService<IMessageBoxService>(); } set { } }
         public IServiceContainer IServiceContainer { get; set; }
@@ -140,10 +156,13 @@ namespace ExcelSampleApp
             AddEntryCommandExcelA = new DelegateCommand(AddEntryExcelA);
             AddEntryCommandExcelB = new DelegateCommand(AddEntryExcelB);
             AddEntryCommandExcelC = new DelegateCommand(AddEntryExcelC);
+            EditEntryCommandExcelC = new DelegateCommand(EditEntryExcelC);
+            DeleteEntryCommandExcelC = new DelegateCommand(DeleteEntryExcelC);
             ExportExcelACommand = new DelegateCommand(ExportExcelA);
             ExportExcelBCommand = new DelegateCommand(ExportExcelB);
             ExportExcelCCommand = new DelegateCommand(ExportExcelC);
-            DeleteEntryAOnKeyCommand = new DelegateCommand(DeleteEntryAOnKey);
+            OnGridEditedCommand = new DelegateCommand(OnAItemChangedReloadVal4s);
+            SaveExcelsCommand = new DelegateCommand(SaveExcels);
 
             IServiceContainer = new ServiceContainer(this);
             ServiceContainer.RegisterService(new DevExpress.Mvvm.UI.MessageBoxService());
@@ -158,6 +177,7 @@ namespace ExcelSampleApp
             AddExcelB = new ExcelB();
 
             MyCollectionA = new ObservableCollection<ExcelA>();
+            MyCollectionExcelAValue12 = new ObservableCollection<String>();
             MyCollectionB = new ObservableCollection<ExcelB>();
             MyCollectionC = new ObservableCollection<ExcelC>();
 
@@ -181,10 +201,29 @@ namespace ExcelSampleApp
             MyCollectionC.Add(entry);
         }
 
+        public void EditEntryExcelCFromCodeBehind(ExcelC entry)
+        {
+            if(entry != null)
+            {
+                List<ExcelC> tempList = MyCollectionC.ToList();
+                foreach(ExcelC item in tempList)
+                {
+                    if (item.Val1.Equals(entry.Val1))
+                    {
+                        item.Val2 = entry.Val2;
+                        item.Val3 = entry.Val3;
+                        item.Val4 = entry.Val4;
+                        MyCollectionC = new ObservableCollection<ExcelC>(tempList);
+                        break;
+                    }
+                }
+            }
+        }
+
         #endregion Public Methods
 
         #region Private Methods    
-        
+
         // Load-And-Store-Methods
 
         private void _LoadAllGridData(String month)
@@ -226,6 +265,18 @@ namespace ExcelSampleApp
             }
         }
 
+        private void OnAItemChangedReloadVal4s()
+        {
+            List<String> tempListStringVal4s = new List<String>();
+            foreach(ExcelA item in MyCollectionA.ToList())
+            {
+                String temp = item.Val1.ToString() + " " + item.Val2.ToString();
+                item.Val4 = temp;
+                tempListStringVal4s.Add(temp);
+            }
+            MyCollectionExcelAValue12 = new ObservableCollection<String>(tempListStringVal4s);
+        }
+
         #endregion Private Methods
 
         #region Command Methods
@@ -252,12 +303,16 @@ namespace ExcelSampleApp
             ShowAddEntryDialogFuncExcelC.Invoke(0, 0);
         }
 
-        private void DeleteEntryAOnKey()
+        private void EditEntryExcelC()
         {
-            if (MyCollectionA.Contains(SelectedItemExcelA))
+            ShowEditEntryDialogFuncExcelC.Invoke(SelectedItemExcelC);
+        }
+
+        private void DeleteEntryExcelC()
+        {
+            if(SelectedItemExcelC != null && SelectedItemExcelC.Val1 != null)
             {
-                MyCollectionA.Remove(SelectedItemExcelA);
-                OnBItemChangedReloadGrid(MyActiveItemB);
+                MyCollectionC.Remove(SelectedItemExcelC);
             }
         }
 
@@ -279,6 +334,11 @@ namespace ExcelSampleApp
         {
             _manager.StoreCollectionC(MyCollectionC.ToList(), SelectedMonth);
             _manager.OpenExcelC(SelectedMonth);
+        }
+
+        private void SaveExcels()
+        {
+            StoreAllCollections();
         }
 
         #endregion Command Methods
