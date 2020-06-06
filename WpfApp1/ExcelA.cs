@@ -14,7 +14,7 @@ namespace ExcelSampleApp
         public string Val3 { get; set; }
         public string Val4 { get; set; }
 
-        //test comment for GITHUB
+        // test comment for GITHUB
 
     }
 }
